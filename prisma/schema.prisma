@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 定义生成器，指定使用 Prisma Client JS 作为生成的客户端代码
+generator client {
+  // 生成器的提供者，这里使用 Prisma Client JS
+  provider = "prisma-client-js"
+}
+
+// 定义数据源，指定数据库的相关信息
+datasource db {
+  // 数据源的提供者，这里使用 MySQL 数据库
+  provider = "mysql"
+  // 数据库连接的 URL，从环境变量中获取
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model sys_user {
+  userid    BigInt   @id @default(autoincrement())
+  deptid    BigInt
+  username  String   @unique
+  nickname  String
+  email     String   @unique
+  phone     String   @unique
+  sex       String   @default("0")
+  avatar    String
+  status    String   @default("0")
+  remark    String
+  password  String
+  createdBy String
+  updatedBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

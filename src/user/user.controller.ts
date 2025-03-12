@@ -1,33 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+/*
+ * @Author: elk
+ * @Date: 2025-03-11 18:18:35
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-12 18:40:28
+ * @FilePath: /vue2_project_server/src/user/user.controller.ts
+ * @Description: 文件内容描述语
+ */
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('user')
+import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
+
+@ApiTags('用户管理')
+@Controller('/system/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  // 新增用户
+  @Post('')
+  @ApiOperation({ summary: '新增用户', description: '新增用户' })
+  @ApiBody({ type: CreateUserDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {
+  // 获取用户
+  @Get('/list')
+  @ApiOperation({ summary: '获取用户列表', description: '获取用户列表' })
+  @ApiParam({ name: 'pageNum', description: '页码' })
+  @ApiParam({ name: 'pageSize', description: '每页数量' })
+  list(@Param() params: { pageNum: number; pageSize: number }) {
+    console.log('🚀 ~ UserController ~ list ~ params:', params);
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
+  // 修改用户
+  @Patch('')
+  @ApiOperation({ summary: '修改用户', description: '修改用户' })
+  @ApiBody({ type: UpdateUserDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
+  // 删除用户
   @Delete(':id')
+  @ApiOperation({ summary: '删除用户', description: '删除用户' })
+  @ApiParam({ name: 'id', description: '用户ID' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
