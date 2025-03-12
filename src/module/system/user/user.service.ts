@@ -1,9 +1,17 @@
+/*
+ * @Author: elk
+ * @Date: 2025-03-11 18:18:35
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-12 19:27:20
+ * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
+ * @Description: 文件内容描述语
+ */
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 // 引入prisma服务
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../../../prisma/prisma.service';
 
 @Injectable()
 export class UserService {
