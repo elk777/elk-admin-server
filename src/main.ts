@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:15:32
  * @LastEditors: elk
- * @LastEditTime: 2025-03-11 19:22:56
+ * @LastEditTime: 2025-03-13 20:43:23
  * @FilePath: /vue2_project_server/src/main.ts
  * @Description: 入口文件配置
  */
@@ -25,6 +25,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
-  await app.listen(3000);
+
+  // 开启跨域
+  app.enableCors();
+
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
