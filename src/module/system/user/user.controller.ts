@@ -2,8 +2,8 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
  * @LastEditors: elk 
- * @LastEditTime: 2025-03-12 18:40:28
- * @FilePath: /vue2_project_server/src/user/user.controller.ts
+ * @LastEditTime: 2025-03-15 12:46:07
+ * @FilePath: /vue2_project_server/src/module/system/user/user.controller.ts
  * @Description: 文件内容描述语
  */
 import {
@@ -14,6 +14,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,9 +40,9 @@ export class UserController {
   @ApiOperation({ summary: '获取用户列表', description: '获取用户列表' })
   @ApiParam({ name: 'pageNum', description: '页码' })
   @ApiParam({ name: 'pageSize', description: '每页数量' })
-  list(@Param() params: { pageNum: number; pageSize: number }) {
+  list(@Query() params: { pageNum: number; pageSize: number }) {
     console.log('🚀 ~ UserController ~ list ~ params:', params);
-    return this.userService.findAll();
+    return this.userService.findAll(params);
   }
 
   // 修改用户
