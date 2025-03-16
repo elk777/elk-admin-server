@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:15:32
  * @LastEditors: elk
- * @LastEditTime: 2025-03-13 20:43:23
+ * @LastEditTime: 2025-03-16 16:30:38
  * @FilePath: /vue2_project_server/src/main.ts
  * @Description: 入口文件配置
  */
@@ -11,6 +11,11 @@ import { AppModule } from './app.module';
 
 // 引入swagger配置
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+// 引入全局响应拦截器
+import { ResponseInterceptor } from './common/Interceptors/response.interceptor';
+// 引入全局异常过滤器
+import { AllExceptionsFilter } from '@/common/filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,6 +30,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
+
+  // 全局响应拦截器
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  // 全局异常过滤器
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // 开启跨域
   app.enableCors();

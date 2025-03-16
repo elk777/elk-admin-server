@@ -1,8 +1,8 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
- * @LastEditors: elk 
- * @LastEditTime: 2025-03-15 12:55:57
+ * @LastEditors: elk
+ * @LastEditTime: 2025-03-16 10:12:00
  * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
  * @Description: 文件内容描述语
  */
@@ -29,15 +29,8 @@ export class UserService {
   }
 
   async findAll({ pageNum, pageSize }: { pageNum: number; pageSize: number }) {
-    console.log('🚀 ~ UserService ~ findAll ~ pageSize:', pageSize);
-    console.log('🚀 ~ UserService ~ findAll ~ pageNum:', pageNum);
-    // 测试redis
-    // const redispageNum = await this.redis.set('pageNum', pageNum);
-    // const redispageSzie = await this.redis.set('pageSize', pageSize);
-    // await this.redis.del('pageSize');
     // 查询用户表
     const user = await this.prisma.sys_user.findMany();
-    // console.log('🚀 ~ UserService ~ findAll ~ user:', user);
     return user;
   }
 
