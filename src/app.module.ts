@@ -1,14 +1,15 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:15:32
- * @LastEditors: elk
- * @LastEditTime: 2025-03-15 12:12:45
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-17 19:32:44
  * @FilePath: /vue2_project_server/src/app.module.ts
  * @Description: 文件内容描述语
  */
 import { Module } from '@nestjs/common';
 import { SystemModule } from './module/system/system.module';
 import { RedisModule } from './module/common/redis/redis.module';
+import { LoggerModule } from './module/common/logger/logger.module';
 import { ConfigModule } from '@nestjs/config';
 // 配置文件
 import confg from '@/config/index';
@@ -59,6 +60,7 @@ console.log('🚀 ~ 当前启动的环境:', process.env.NODE_ENV);
       cache: true,
     }),
     RedisModule,
+    LoggerModule,
   ],
 })
 export class AppModule {}
