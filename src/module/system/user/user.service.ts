@@ -1,8 +1,8 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
- * @LastEditors: elk
- * @LastEditTime: 2025-03-16 10:12:00
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-18 18:44:13
  * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
  * @Description: 文件内容描述语
  */
@@ -31,6 +31,16 @@ export class UserService {
   async findAll({ pageNum, pageSize }: { pageNum: number; pageSize: number }) {
     // 查询用户表
     const user = await this.prisma.sys_user.findMany();
+    return user;
+  }
+
+  async findOne(params) {
+    // 查询用户表
+    const user = await this.prisma.sys_user.findMany({
+      where: {
+        ...params,
+      },
+    });
     return user;
   }
 

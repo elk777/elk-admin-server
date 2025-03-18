@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-16 11:29:16
  * @LastEditors: elk
- * @LastEditTime: 2025-03-17 19:42:25
+ * @LastEditTime: 2025-03-18 20:11:54
  * @FilePath: /vue2_project_server/src/common/filters/all-exceptions.filter.ts
  * @Description: 统一的错误处理过滤器
  */
@@ -34,7 +34,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR; // 获取状态码，默认为500
     const message =
-      exception instanceof HttpException ? exception.message : '服务器错误'; // 获取错误信息，默认为'服务器错误'
+      exception instanceof HttpException
+        ? exception.getResponse() || exception.message
+        : '服务器错误'; // 获取错误信息，默认为'服务器错误'
     // 返回统一的错误响应格式
     response.status(status).json({
       code: status, // 状态码
