@@ -1,10 +1,10 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
- * @LastEditors: elk
- * @LastEditTime: 2025-03-18 19:28:50
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-19 09:25:49
  * @FilePath: /vue2_project_server/src/module/system/auth/dto/create-auth.dto.ts
- * @Description: 文件内容描述语
+ * @Description: 登录信息dto
  */
 import { ApiProperty } from '@nestjs/swagger';
 import {

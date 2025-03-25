@@ -1,3 +1,11 @@
+/*
+ * @Author: elk
+ * @Date: 2025-03-13 20:09:22
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-03-20 15:20:20
+ * @FilePath: /vue2_project_server/src/config/schema.config.ts
+ * @Description: joi验证配置文件
+ */
 import * as joi from 'joi';
 
 // 定义配置文件的类型
@@ -25,4 +33,15 @@ export const configJoiSchema = joi.object({
   DB_USER: joi.string().required().default('root'),
   DB_PASSWORD: joi.string().required(),
   DB_NAME: joi.string().required(),
+  REDIS_HOST: joi.string().required().default('127.0.0.1'),
+  REDIS_PORT: joi.number().required().default(63795),
+  REDIS_PASSWORD: joi.string().required(),
+  REDIS_PREFIX: joi.string().required(),
+  REDIS_DB: joi.number().required(),
+  REDIS_URL: joi.string().required(),
+  JWT_SECRET: joi.string().required(),
+  JWT_EXPIRES_IN: joi.string().required(),
+  JWT_REFRESH_EXPIRES_IN: joi.string().required(),
+  JWT_COOKIE_SECURE: joi.boolean().required().default(false),
+  JWT_COOKIE_HTTPONLY: joi.boolean().required().default(true),
 });

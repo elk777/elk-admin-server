@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
  * @LastEditors: elk 
- * @LastEditTime: 2025-03-18 18:44:13
+ * @LastEditTime: 2025-03-21 19:23:13
  * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
  * @Description: 文件内容描述语
  */
@@ -41,7 +41,7 @@ export class UserService {
         ...params,
       },
     });
-    return user;
+    return user[0];
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
