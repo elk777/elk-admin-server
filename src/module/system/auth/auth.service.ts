@@ -1,8 +1,8 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
- * @LastEditors: elk 
- * @LastEditTime: 2025-03-25 18:57:46
+ * @LastEditors: elk
+ * @LastEditTime: 2025-04-09 11:20:50
  * @FilePath: /vue2_project_server/src/module/system/auth/auth.service.ts
  * @Description: 文件内容描述语
  */
@@ -12,8 +12,8 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 
 import { JwtService } from '@nestjs/jwt';
-import { RedisService } from '@/module/common/redis/redis.service'
- 
+import { RedisService } from '@/module/common/redis/redis.service';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,7 +23,9 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string) {
+    console.log('🚀 ~ AuthService ~ validateUser ~ validateUser:');
     const user = await this.userService.findOne({ username });
+    console.log('🚀 ~ AuthService ~ validateUser ~ user:', user);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -31,6 +33,7 @@ export class AuthService {
     return null;
   }
   async signIn(createAuthDto: CreateAuthDto) {
+    console.log('🚀 ~ AuthService ~ signIn ~ signIn:');
     const { username } = createAuthDto;
     const user = await this.userService.findOne({ username });
     const payload = {
