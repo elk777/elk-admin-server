@@ -2,20 +2,11 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
  * @LastEditors: elk 
- * @LastEditTime: 2025-04-07 16:45:47
+ * @LastEditTime: 2025-05-08 13:44:05
  * @FilePath: /vue2_project_server/src/module/system/auth/auth.controller.ts
  * @Description: 鉴权模块控制器
  */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -43,23 +34,14 @@ export class AuthController {
     return this.authService.signIn(createAuthDto);
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Post('logout')
+  @Public() // 跳过鉴权
+  @ApiOperation({ summary: '登出', description: '登出接口' })
+  logout(@Request() req) {
+    const { user } = req;
+    if (user) {
+      return this.authService.signOut(`${user.username}&${user.sub}`);
+    }
+    return true;
   }
 }

@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
  * @LastEditors: elk 
- * @LastEditTime: 2025-04-09 11:23:13
+ * @LastEditTime: 2025-05-07 15:25:51
  * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
  * @Description: 文件内容描述语
  */
@@ -30,7 +30,13 @@ export class UserService {
 
   async findAll({ pageNum, pageSize }: { pageNum: number; pageSize: number }) {
     // 查询用户表
-    const user = await this.prisma.sys_user.findMany();
+    const user = await this.prisma.sys_user.findMany({
+      omit: {
+        password: true,
+      },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
+    });
     return user;
   }
 
@@ -42,6 +48,27 @@ export class UserService {
       },
     });
     return user[0];
+  }
+
+  // 关系查询，查询user关联的role
+  async findOneWithRole(params) {
+    // 查询用户表
+    const user = await this.prisma.sys_user.findFirst({
+      where: {
+        ...params,
+      },
+      omit: {
+        password: true,
+      },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
+    });
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

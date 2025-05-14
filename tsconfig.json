@@ -10,7 +10,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "prisma/*": ["prisma/*"]
     },
     "baseUrl": "./",
     "incremental": true,

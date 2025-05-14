@@ -2,18 +2,17 @@
  * @Author: elk
  * @Date: 2025-03-20 15:58:54
  * @LastEditors: elk 
- * @LastEditTime: 2025-03-25 18:28:02
+ * @LastEditTime: 2025-05-08 13:36:36
  * @FilePath: /vue2_project_server/src/module/system/auth/guards/jwt.guard.ts
  * @Description: jwt 守卫
  */
-import {
-  Injectable,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from '@/common/decorators/jwt.decorator';
+import { BizException } from '@/common/exceptions/biz.exception';
+
+import { ErrorConst } from '@/constants/error-const.constant';
 
 @Injectable()
 export class JwtGuard extends AuthGuard('jwt') {
@@ -45,7 +44,8 @@ export class JwtGuard extends AuthGuard('jwt') {
   handleRequest(err, user, info) {
     // 如果有错误或者用户信息不存在，则抛出错误或者 UnauthorizedException
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      // throw err || new UnauthorizedException();
+      throw err || new BizException(ErrorConst.INVALID_TOKEN);
     }
     // 验证通过，返回用户信息
     return user;

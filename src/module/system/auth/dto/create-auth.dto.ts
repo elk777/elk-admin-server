@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
  * @LastEditors: elk 
- * @LastEditTime: 2025-03-19 09:25:49
+ * @LastEditTime: 2025-04-24 16:11:51
  * @FilePath: /vue2_project_server/src/module/system/auth/dto/create-auth.dto.ts
  * @Description: 登录信息dto
  */
@@ -27,7 +27,7 @@ export class CreateAuthDto {
   })
   password: string;
   @ApiProperty({ description: '验证码' })
-  @MinLength(4, { message: '验证码长度不能小于4' })
-  @MaxLength(4, { message: '验证码长度不能大于4' })
+  // @MinLength(4, { message: '验证码长度不能小于4' })
+  // @MaxLength(4, { message: '验证码长度不能大于4' })
   code: string;
 }

@@ -1,8 +1,8 @@
 /*
  * @Author: elk
  * @Date: 2025-03-19 11:24:56
- * @LastEditors: elk
- * @LastEditTime: 2025-03-25 19:02:04
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-05-08 13:36:28
  * @FilePath: /vue2_project_server/src/module/system/auth/strategies/jwt.strategy.ts
  * @Description: jwt 认证策略
  */

@@ -7,20 +7,113 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+///  用户表
 model sys_user {
-  userid    Int    @id @default(autoincrement())
-  deptid    Int?
-  username  String    @unique
-  nickname  String?
-  email     String?   @unique
-  phone     String?   @unique
-  sex       String?   @default("0")
-  avatar    String?
-  status    String?   @default("0")
-  remark    String?
-  password  String
-  createdBy String?
-  updatedBy String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  user_id    Int       @id @default(autoincrement())  /// 用户id
+  dept_id    Int?      /// 部门id
+  user_name  String    /// 用户名称
+  nick_name  String?   /// 用户昵称
+  email     String?   @unique   /// 邮箱
+  phone     String?   @unique   /// 手机号码
+  sex       String?   @default("0") /// 用户性别（0男 1女 2未知）
+  avatar    String?   /// 头像地址
+  status    String?   @default("0") /// 帐号状态（0正常 1停用）
+  del_flag  String    @default("0") /// 删除标志（0代表存在 1代表删除）
+  remark    String?   /// 用户描述
+  password  String    /// 密码
+  created_by String?   /// 创建人员
+  updated_by String?   /// 修改人员
+  created_at DateTime  @default(now())  /// 创建时间
+  updated_at DateTime? @updatedAt /// 修改时间
+  roles      sys_user_role[] /// 用户角色关联表
+}
+
+/// 部门表
+model sys_dept {
+  dept_id    Int       @id @default(autoincrement()) /// 部门id
+  parent_id  Int?      /// 父部门id
+  dept_name  String    /// 部门名称
+  ancestors  String?   /// 祖级列表
+  order_num  Int?      @default(0) /// 显示顺序
+  leader     String?   /// 负责人
+  phone      String?   @unique /// 联系电话
+  email      String?   @unique /// 邮箱
+  status     String?   @default("0") /// 部门状态（0正常 1停用）
+  del_flag   String?   @default("0") /// 删除标志（0代表存在 1代表删除）
+  remark     String?   /// 部门描述
+  created_by String?   /// 创建者
+  updated_by String?   /// 更新者
+  created_at DateTime  @default(now())  /// 创建时间
+  updated_at DateTime? @updatedAt /// 更新时间
+  roles      sys_role_dept[] /// 角色部门关联表 1-N
+}
+
+/// 角色表
+model sys_role {
+  role_id    Int       @id @default(autoincrement()) /// 角色id
+  role_name  String    /// 角色名称
+  role_key   String    /// 角色权限字符串
+  status     String?   @default("0") /// 部门状态（0正常 1停用）
+  order_num  Int?      @default(0) /// 显示顺序
+  del_flag   String?    @default("0") /// 删除标志（0代表存在 1代表删除）
+  remark     String?   /// 角色描述
+  created_by String?   /// 创建者
+  updated_by String?   /// 更新者
+  created_at DateTime  @default(now())  /// 创建时间
+  updated_at DateTime? @updatedAt /// 更新时间
+  users      sys_user_role[] /// 用户角色关联表 1-N
+  menus      sys_role_menu[] /// 角色菜单关联表 1-N
+  depts      sys_role_dept[] /// 角色部门关联表 1-N
+}
+
+/// 菜单表
+model sys_menu {
+  menu_id    Int       @id @default(autoincrement()) /// 菜单id
+  menu_name  String    /// 菜单名称
+  parent_id  Int?      /// 父菜单id
+  order_num  Int?      @default(0) /// 显示顺序
+  menu_type  String?   /// 菜单类型（M目录 C菜单 F按钮）
+  visible    String?   @default("0") /// 菜单状态（0显示 1隐藏）
+  status     String?   @default("0") /// 部门状态（0正常 1停用）
+  perms      String?   /// 权限标识
+  icon       String?   @default("#") /// 菜单图标
+  path       String?   @default("") /// 路由地址
+  component  String?   /// 组件路径
+  query      String?   /// 路由参数
+  is_frame   String?   @default("1") /// 是否为外链（0是 1否）
+  is_cache   String?   @default("0") /// 是否缓存（0缓存 1不缓存）
+  remark     String?   /// 备注
+  el_flag   String?    @default("0") /// 删除标志（0代表存在 1代表删除）
+  created_by String?   /// 创建者
+  updated_by String?   /// 更新者
+  created_at DateTime  @default(now())  /// 创建时间
+  updated_at DateTime? @updatedAt /// 更新时间
+  roles      sys_role_menu[] /// 角色菜单关联表 1-N
+}
+
+/// 用户与角色关联表 N-N
+model sys_user_role {
+  user_id Int /// 用户id
+  role_id Int /// 角色id
+  user sys_user @relation(fields: [user_id], references: [user_id])
+  role sys_role @relation(fields: [role_id], references: [role_id])
+  @@id([user_id, role_id])
+}
+
+/// 角色与菜单关联表 N-N
+model sys_role_menu {
+  role_id Int /// 角色id
+  menu_id Int /// 菜单id
+  role sys_role @relation(fields: [role_id], references: [role_id])
+  menu sys_menu @relation(fields: [menu_id], references: [menu_id])
+  @@id([role_id, menu_id])
+}
+
+/// 角色与部门关联表 N-N
+model sys_role_dept {
+  role_id Int /// 角色id
+  dept_id Int /// 部门id
+  role sys_role @relation(fields: [role_id], references: [role_id])
+  dept sys_dept @relation(fields: [dept_id], references: [dept_id])
+  @@id([role_id, dept_id])
 }
