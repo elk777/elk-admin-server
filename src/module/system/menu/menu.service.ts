@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
- * @LastEditors: elk 
- * @LastEditTime: 2025-05-09 16:08:05
- * @FilePath: /vue2_project_server/src/module/system/menu/menu.service.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-17 17:12:33
+ * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
  * @Description: 菜单服务逻辑
  */
 import { Injectable } from '@nestjs/common';
@@ -17,6 +17,8 @@ import { PrismaService } from 'prisma/prisma.service';
 
 import { plainToInstance } from 'class-transformer';
 
+import { camelizeKeys } from 'humps';
+
 @Injectable()
 export class MenuService {
   constructor(private prisma: PrismaService) {}
@@ -24,8 +26,17 @@ export class MenuService {
     return 'This action adds a new menu';
   }
 
-  findAll() {
-    return `This action returns all menu`;
+  /**
+   * 获取菜单列表
+   * @param params
+   * @returns
+   */
+  async getList({ pageNum, pageSize }: { pageNum: number; pageSize: number }) {
+    const menus = await this.prisma.sys_menu.findMany({
+      skip: (pageNum - 1) * pageSize,
+      take: Number(pageSize),
+    });
+    return camelizeKeys(menus);
   }
 
   findOne(id: number) {
@@ -66,7 +77,6 @@ export class MenuService {
       menus.menus.map((menu) => menu.menu, { excludeExtraneousValues: true }),
     );
     const formatMenus = transformRoutes(menuData);
-    // console.log('🚀 ~ MenuService ~ getMenus ~ formatMenus:', formatMenus);
     return formatMenus;
   }
 }

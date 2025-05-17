@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
- * @LastEditors: elk 
- * @LastEditTime: 2025-05-08 15:52:49
- * @FilePath: /vue2_project_server/src/module/system/auth/auth.service.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-15 14:58:33
+ * @FilePath: \elk-admin-server\src\module\system\auth\auth.service.ts
  * @Description: 文件内容描述语
  */
 import { Injectable } from '@nestjs/common';

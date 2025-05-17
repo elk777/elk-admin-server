@@ -117,3 +117,24 @@ model sys_role_dept {
   dept sys_dept @relation(fields: [dept_id], references: [dept_id])
   @@id([role_id, dept_id])
 }
+
+/// 字典类型表
+model sys_dict_type {
+  dictID     Int       @id @default(autoincrement()) @map("dict_id")
+  dictName   String?   @unique @map("dict_name")
+  dictType   String    @unique @map("dict_type")
+  status     Int       @default(0)
+  createBy   String?   @default("") @map("create_by")
+  createTime DateTime? @default(now()) @map("create_time")
+  updateBy   String?   @default("") @map("update_by")
+  updateTime DateTime? @default(now()) @map("update_time")
+}
+/// 字典数据表
+model sys_dict_data {
+  dictCode   Int       @id @default(autoincrement()) @map("dict_code")
+  dictLabel  String    @map("dict_label")
+  dictValue  String    @map("dict_value")
+  dictSort   Int       @default(0) @map("dict_sort")
+  status     Int       @default(0)
+  createBy   String?   @default("") @map("create_by")
+}

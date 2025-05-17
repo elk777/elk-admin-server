@@ -14,4 +14,7 @@ export enum PermissionContant {
   MENU = 'C',
   // 按钮
   BUTTON = 'A',
+
+  // admin权限
+  PERMISSIONADMIN = '*:*:*',
 }

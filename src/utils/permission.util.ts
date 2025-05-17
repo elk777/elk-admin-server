@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-05-08 14:36:31
- * @LastEditors: elk 
- * @LastEditTime: 2025-05-14 12:15:50
- * @FilePath: /vue2_project_server/src/utils/permission.util.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-17 14:27:14
+ * @FilePath: \elk-admin-server\src\utils\permission.util.ts
  * @Description: 权限相关工具类
  */
 
@@ -21,6 +21,7 @@ export interface IRouterRow {
   redirect?: string;
   component?: string;
   affix?: boolean;
+  isLink?: string;
   noCache?: boolean | number;
 
   children?: IRouterRow[];
@@ -51,6 +52,7 @@ export function filterRoutes(route: ListMenuDto, isRoot: boolean): IRouterRow {
       path: route.path,
       icon: route.icon,
       link: route.component,
+      isLink: !Number(route.isFrame) && route.component,
       affix: false,
       noCache: route.isCache,
     };
@@ -77,11 +79,11 @@ export function transformRoutes(
     }
     // 目录
     if (!parentRoute && route.menuType === PermissionContant.CATALOGUE) {
-      //   const childenRoutes = transformRoutes(routes, route);
+      const childenRoutes = transformRoutes(routes, route);
       rootRouter = filterRoutes(route, true);
-      //   if (childenRoutes && childenRoutes.length > 0) {
-      //     rootRouter.children = childenRoutes;
-      //   }
+      if (childenRoutes && childenRoutes.length > 0) {
+        rootRouter.children = childenRoutes;
+      }
       //菜单
     } else if (!parentRoute && route.menuType === PermissionContant.MENU) {
       rootRouter = filterRoutes(route, false);
@@ -91,6 +93,8 @@ export function transformRoutes(
       route.parentId === parentRoute.menuId
     ) {
       rootRouter = filterRoutes(route, false);
+    } else {
+      rootRouter = null;
     }
     if (rootRouter) {
       routerList.push(rootRouter);
