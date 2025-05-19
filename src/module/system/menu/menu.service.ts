@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 import { ListMenuDto } from './dto/list-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 
-import { transformRoutes } from '@/utils/permission.util';
+import { getRoutes } from '@/utils/permission.util';
 
 // 引入prisma服务
 import { PrismaService } from 'prisma/prisma.service';
@@ -76,7 +76,7 @@ export class MenuService {
       ListMenuDto,
       menus.menus.map((menu) => menu.menu, { excludeExtraneousValues: true }),
     );
-    const formatMenus = transformRoutes(menuData);
+    const formatMenus = getRoutes(menuData);
     return formatMenus;
   }
 }

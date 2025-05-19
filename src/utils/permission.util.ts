@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-08 14:36:31
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-17 14:27:14
+ * @LastEditTime: 2025-05-19 16:14:25
  * @FilePath: \elk-admin-server\src\utils\permission.util.ts
  * @Description: 权限相关工具类
  */
@@ -23,7 +23,6 @@ export interface IRouterRow {
   affix?: boolean;
   isLink?: string;
   noCache?: boolean | number;
-
   children?: IRouterRow[];
 }
 
@@ -52,7 +51,7 @@ export function filterRoutes(route: ListMenuDto, isRoot: boolean): IRouterRow {
       path: route.path,
       icon: route.icon,
       link: route.component,
-      isLink: !Number(route.isFrame) && route.component,
+      isLink: !Number(route.isFrame) && route.path,
       affix: false,
       noCache: route.isCache,
     };
@@ -77,6 +76,10 @@ export function transformRoutes(
     if (Number(route.status) || Number(route.visible)) {
       return;
     }
+    // 只处理顶层目录和菜单
+    if (!parentRoute && route.parentId !== 0) {
+      return;
+    }
     // 目录
     if (!parentRoute && route.menuType === PermissionContant.CATALOGUE) {
       const childenRoutes = transformRoutes(routes, route);
@@ -87,12 +90,17 @@ export function transformRoutes(
       //菜单
     } else if (!parentRoute && route.menuType === PermissionContant.MENU) {
       rootRouter = filterRoutes(route, false);
-    } else if (
-      parentRoute &&
-      route.menuType === PermissionContant.MENU &&
-      route.parentId === parentRoute.menuId
-    ) {
-      rootRouter = filterRoutes(route, false);
+    } else if (parentRoute && route.parentId === parentRoute.menuId) {
+      // 涉及到多层菜单和目录结构
+      if (route.menuType === PermissionContant.CATALOGUE) {
+        const childenRoutes = transformRoutes(routes, route);
+        rootRouter = filterRoutes(route, true);
+        if (childenRoutes && childenRoutes.length > 0) {
+          rootRouter.children = childenRoutes;
+        }
+      } else {
+        rootRouter = filterRoutes(route, false);
+      }
     } else {
       rootRouter = null;
     }
@@ -101,4 +109,13 @@ export function transformRoutes(
     }
   });
   return routerList;
+}
+
+/**
+ * 获取路由列表
+ * @param routes parentRoute
+ * @returns IRouterRow[]
+ */
+export function getRoutes(routes: ListMenuDto[]): IRouterRow[] {
+  return transformRoutes(routes);
 }
