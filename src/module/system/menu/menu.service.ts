@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-17 17:12:33
+ * @LastEditTime: 2025-05-19 20:09:53
  * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
  * @Description: 菜单服务逻辑
  */
@@ -17,7 +17,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 import { plainToInstance } from 'class-transformer';
 
-import { camelizeKeys } from 'humps';
+import { camelizeKeys, decamelizeKeys } from 'humps';
 
 @Injectable()
 export class MenuService {
@@ -39,16 +39,54 @@ export class MenuService {
     return camelizeKeys(menus);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} menu`;
+  /**
+   * 获取菜单详情
+   * @param id
+   * @return ListMenuDto[]
+   */
+  async findOne(id: number) {
+    const menus = await this.prisma.sys_menu.findUnique({
+      where: {
+        menu_id: id,
+      },
+    });
+    return camelizeKeys(menus);
   }
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} menu`;
+  /**
+   * 更新菜单
+   * @param id
+   * @param updateMenuDto: ListMenuDto
+   * @return ListMenuDto[]
+   */
+  async update(updateMenuDto: UpdateMenuDto) {
+    const menus = await this.prisma.sys_menu.update({
+      where: {
+        menu_id: updateMenuDto.menuId,
+      },
+      data: decamelizeKeys(updateMenuDto),
+    });
+    if (!menus) {
+      return '修改失败';
+    }
+    return '修改成功';
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} menu`;
+  /**
+   * 删除菜单
+   * @param id
+   * @return ListMenuDto[]
+   */
+  async remove(id: number) {
+    const menus = await this.prisma.sys_menu.delete({
+      where: {
+        menu_id: id,
+      },
+    });
+    if (!menus) {
+      return '删除失败';
+    }
+    return '删除成功';
   }
 
   /**
