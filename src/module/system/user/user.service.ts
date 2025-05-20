@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-17 15:39:51
+ * @LastEditTime: 2025-05-19 20:30:41
  * @FilePath: \elk-admin-server\src\module\system\user\user.service.ts
  * @Description: 文件内容描述语
  */
@@ -40,7 +40,7 @@ export class UserService {
         password: true,
       },
       skip: (pageNum - 1) * pageSize,
-      take: pageSize,
+      take: Number(pageSize),
     });
     return user;
   }

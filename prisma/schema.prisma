@@ -52,7 +52,7 @@ model sys_dept {
 model sys_role {
   role_id    Int       @id @default(autoincrement()) /// 角色id
   role_name  String    /// 角色名称
-  role_key   String    /// 角色权限字符串
+  role_label   String    /// 角色权限字符串
   status     String?   @default("0") /// 部门状态（0正常 1停用）
   order_num  Int?      @default(0) /// 显示顺序
   del_flag   String?    @default("0") /// 删除标志（0代表存在 1代表删除）
@@ -137,4 +137,5 @@ model sys_dict_data {
   dictSort   Int       @default(0) @map("dict_sort")
   status     Int       @default(0)
   createBy   String?   @default("") @map("create_by")
+  createTime DateTime? @default(now()) @map("create_time")
 }

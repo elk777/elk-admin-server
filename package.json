@@ -22,7 +22,7 @@
     "prisma:generate": "prisma generate",
     "prisma:pull-DB": "prisma db pull",
     "prisma:push-DB": "prisma db push",
-    "prisma:migrate-create": "prisma migrate dev --name init"
+    "prisma:migrate-create": "prisma migrate dev --name abc"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.0.2",

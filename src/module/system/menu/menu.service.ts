@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-19 20:09:53
+ * @LastEditTime: 2025-05-19 20:37:33
  * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
  * @Description: 菜单服务逻辑
  */
@@ -17,6 +17,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 import { plainToInstance } from 'class-transformer';
 
+// 引入humps库:下划线和小驼峰转换
 import { camelizeKeys, decamelizeKeys } from 'humps';
 
 @Injectable()
@@ -33,8 +34,8 @@ export class MenuService {
    */
   async getList({ pageNum, pageSize }: { pageNum: number; pageSize: number }) {
     const menus = await this.prisma.sys_menu.findMany({
-      skip: (pageNum - 1) * pageSize,
-      take: Number(pageSize),
+      skip: (pageNum - 1) * pageSize || 0,
+      take: Number(pageSize) || 100000,
     });
     return camelizeKeys(menus);
   }
