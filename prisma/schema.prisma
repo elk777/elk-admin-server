@@ -7,115 +7,189 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-///  用户表
+/// 用户表
 model sys_user {
-  user_id    Int       @id @default(autoincrement())  /// 用户id
-  dept_id    Int?      /// 部门id
-  user_name  String    /// 用户名称
-  nick_name  String?   /// 用户昵称
-  email     String?   @unique   /// 邮箱
-  phone     String?   @unique   /// 手机号码
-  sex       String?   @default("0") /// 用户性别（0男 1女 2未知）
-  avatar    String?   /// 头像地址
-  status    String?   @default("0") /// 帐号状态（0正常 1停用）
-  del_flag  String    @default("0") /// 删除标志（0代表存在 1代表删除）
-  remark    String?   /// 用户描述
-  password  String    /// 密码
-  created_by String?   /// 创建人员
-  updated_by String?   /// 修改人员
-  created_at DateTime  @default(now())  /// 创建时间
-  updated_at DateTime? @updatedAt /// 修改时间
-  roles      sys_user_role[] /// 用户角色关联表
+  /// 用户id
+  user_id    Int             @id @default(autoincrement())
+  /// 部门id
+  dept_id    Int?
+  /// 用户名称
+  user_name  String
+  /// 用户昵称
+  nick_name  String?
+  /// 邮箱
+  email      String?         @unique
+  /// 手机号码
+  phone      String?         @unique
+  /// 用户性别（0男 1女 2未知）
+  sex        String?         @default("0")
+  /// 头像地址
+  avatar     String?
+  /// 帐号状态（0正常 1停用）
+  status     String?         @default("0")
+  /// 删除标志（0代表存在 1代表删除）
+  del_flag   String          @default("0")
+  /// 用户描述
+  remark     String?
+  /// 密码
+  password   String
+  /// 创建人员
+  created_by String?
+  /// 修改人员
+  updated_by String?
+  /// 创建时间
+  created_at DateTime        @default(now())
+  /// 修改时间
+  updated_at DateTime?       @updatedAt
+  roles      sys_user_role[]
 }
 
 /// 部门表
 model sys_dept {
-  dept_id    Int       @id @default(autoincrement()) /// 部门id
-  parent_id  Int?      /// 父部门id
-  dept_name  String    /// 部门名称
-  ancestors  String?   /// 祖级列表
-  order_num  Int?      @default(0) /// 显示顺序
-  leader     String?   /// 负责人
-  phone      String?   @unique /// 联系电话
-  email      String?   @unique /// 邮箱
-  status     String?   @default("0") /// 部门状态（0正常 1停用）
-  del_flag   String?   @default("0") /// 删除标志（0代表存在 1代表删除）
-  remark     String?   /// 部门描述
-  created_by String?   /// 创建者
-  updated_by String?   /// 更新者
-  created_at DateTime  @default(now())  /// 创建时间
-  updated_at DateTime? @updatedAt /// 更新时间
-  roles      sys_role_dept[] /// 角色部门关联表 1-N
+  /// 部门id
+  dept_id    Int             @id @default(autoincrement())
+  /// 父部门id
+  parent_id  Int?
+  /// 部门名称
+  dept_name  String
+  /// 祖级列表
+  ancestors  String?
+  /// 显示顺序
+  order_num  Int?            @default(0)
+  /// 负责人
+  leader     String?
+  /// 联系电话
+  phone      String?         @unique
+  /// 邮箱
+  email      String?         @unique
+  /// 部门状态（0正常 1停用）
+  status     String?         @default("0")
+  /// 删除标志（0代表存在 1代表删除）
+  del_flag   String?         @default("0")
+  /// 部门描述
+  remark     String?
+  /// 创建者
+  created_by String?
+  /// 更新者
+  updated_by String?
+  /// 创建时间
+  created_at DateTime        @default(now())
+  /// 更新时间
+  updated_at DateTime?       @updatedAt
+  roles      sys_role_dept[]
 }
 
 /// 角色表
 model sys_role {
-  role_id    Int       @id @default(autoincrement()) /// 角色id
-  role_name  String    /// 角色名称
-  role_label   String    /// 角色权限字符串
-  status     String?   @default("0") /// 部门状态（0正常 1停用）
-  order_num  Int?      @default(0) /// 显示顺序
-  del_flag   String?    @default("0") /// 删除标志（0代表存在 1代表删除）
-  remark     String?   /// 角色描述
-  created_by String?   /// 创建者
-  updated_by String?   /// 更新者
-  created_at DateTime  @default(now())  /// 创建时间
-  updated_at DateTime? @updatedAt /// 更新时间
-  users      sys_user_role[] /// 用户角色关联表 1-N
-  menus      sys_role_menu[] /// 角色菜单关联表 1-N
-  depts      sys_role_dept[] /// 角色部门关联表 1-N
+  /// 角色id
+  role_id    Int             @id @default(autoincrement())
+  /// 角色名称
+  role_name  String
+  /// 角色权限字符串
+  role_label String
+  /// 部门状态（0正常 1停用）
+  status     String?         @default("0")
+  /// 显示顺序
+  order_num  Int?            @default(0)
+  /// 删除标志（0代表存在 1代表删除）
+  del_flag   String?         @default("0")
+  /// 角色描述
+  remark     String?
+  /// 创建者
+  created_by String?
+  /// 更新者
+  updated_by String?
+  /// 创建时间
+  created_at DateTime        @default(now())
+  /// 更新时间
+  updated_at DateTime?       @updatedAt
+  depts      sys_role_dept[]
+  menus      sys_role_menu[]
+  users      sys_user_role[]
 }
 
 /// 菜单表
 model sys_menu {
-  menu_id    Int       @id @default(autoincrement()) /// 菜单id
-  menu_name  String    /// 菜单名称
-  parent_id  Int?      /// 父菜单id
-  order_num  Int?      @default(0) /// 显示顺序
-  menu_type  String?   /// 菜单类型（M目录 C菜单 F按钮）
-  visible    String?   @default("0") /// 菜单状态（0显示 1隐藏）
-  status     String?   @default("0") /// 部门状态（0正常 1停用）
-  perms      String?   /// 权限标识
-  icon       String?   @default("#") /// 菜单图标
-  path       String?   @default("") /// 路由地址
-  component  String?   /// 组件路径
-  query      String?   /// 路由参数
-  is_frame   String?   @default("1") /// 是否为外链（0是 1否）
-  is_cache   String?   @default("0") /// 是否缓存（0缓存 1不缓存）
-  remark     String?   /// 备注
-  el_flag   String?    @default("0") /// 删除标志（0代表存在 1代表删除）
-  created_by String?   /// 创建者
-  updated_by String?   /// 更新者
-  created_at DateTime  @default(now())  /// 创建时间
-  updated_at DateTime? @updatedAt /// 更新时间
-  roles      sys_role_menu[] /// 角色菜单关联表 1-N
+  /// 菜单id
+  menu_id    Int             @id @default(autoincrement())
+  /// 菜单名称
+  menu_name  String
+  /// 父菜单id
+  parent_id  Int?
+  /// 显示顺序
+  order_num  Int?            @default(0)
+  /// 菜单类型（M目录 C菜单 F按钮）
+  menu_type  String?
+  /// 菜单状态（0显示 1隐藏）
+  visible    String?         @default("0")
+  /// 部门状态（0正常 1停用）
+  status     String?         @default("0")
+  /// 权限标识
+  perms      String?
+  /// 菜单图标
+  icon       String?         @default("#")
+  /// 路由地址
+  path       String?         @default("")
+  /// 组件路径
+  component  String?
+  /// 路由参数
+  query      String?
+  /// 是否为外链（0是 1否）
+  is_frame   String?         @default("1")
+  /// 是否缓存（0缓存 1不缓存）
+  is_cache   String?         @default("0")
+  /// 备注
+  remark     String?
+  /// 删除标志（0代表存在 1代表删除）
+  el_flag    String?         @default("0")
+  /// 创建者
+  created_by String?
+  /// 更新者
+  updated_by String?
+  /// 创建时间
+  created_at DateTime        @default(now())
+  /// 更新时间
+  updated_at DateTime?       @updatedAt
+  roles      sys_role_menu[]
 }
 
 /// 用户与角色关联表 N-N
 model sys_user_role {
-  user_id Int /// 用户id
-  role_id Int /// 角色id
-  user sys_user @relation(fields: [user_id], references: [user_id])
-  role sys_role @relation(fields: [role_id], references: [role_id])
+  /// 用户id
+  user_id Int
+  /// 角色id
+  role_id Int
+  role    sys_role @relation(fields: [role_id], references: [role_id])
+  user    sys_user @relation(fields: [user_id], references: [user_id])
+
   @@id([user_id, role_id])
+  @@index([role_id], map: "sys_user_role_role_id_fkey")
 }
 
 /// 角色与菜单关联表 N-N
 model sys_role_menu {
-  role_id Int /// 角色id
-  menu_id Int /// 菜单id
-  role sys_role @relation(fields: [role_id], references: [role_id])
-  menu sys_menu @relation(fields: [menu_id], references: [menu_id])
+  /// 角色id
+  role_id Int
+  /// 菜单id
+  menu_id Int
+  menu    sys_menu @relation(fields: [menu_id], references: [menu_id])
+  role    sys_role @relation(fields: [role_id], references: [role_id])
+
   @@id([role_id, menu_id])
+  @@index([menu_id], map: "sys_role_menu_menu_id_fkey")
 }
 
 /// 角色与部门关联表 N-N
 model sys_role_dept {
-  role_id Int /// 角色id
-  dept_id Int /// 部门id
-  role sys_role @relation(fields: [role_id], references: [role_id])
-  dept sys_dept @relation(fields: [dept_id], references: [dept_id])
+  /// 角色id
+  role_id Int
+  /// 部门id
+  dept_id Int
+  dept    sys_dept @relation(fields: [dept_id], references: [dept_id])
+  role    sys_role @relation(fields: [role_id], references: [role_id])
+
   @@id([role_id, dept_id])
+  @@index([dept_id], map: "sys_role_dept_dept_id_fkey")
 }
 
 /// 字典类型表
@@ -129,9 +203,11 @@ model sys_dict_type {
   updateBy   String?   @default("") @map("update_by")
   updateTime DateTime? @default(now()) @map("update_time")
 }
+
 /// 字典数据表
 model sys_dict_data {
-  dictCode   Int       @id @default(autoincrement()) @map("dict_code")
+  id         String    @id @db.VarChar(255)
+  dictCode   String    @map("dict_code") @db.VarChar(255)
   dictLabel  String    @map("dict_label")
   dictValue  String    @map("dict_value")
   dictSort   Int       @default(0) @map("dict_sort")
