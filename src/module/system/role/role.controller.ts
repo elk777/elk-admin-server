@@ -76,8 +76,9 @@ export class RoleController {
     return this.roleService.update(updateRoleDto);
   }
 
+  @ApiOperation({ summary: '删除角色', description: '删除角色' })
   @Delete('/del')
-  remove(@Param('id') id: string) {
-    return this.roleService.remove(+id);
+  remove(@Body() { ids }: { ids: number[] }) {
+    return this.roleService.remove({ ids });
   }
 }

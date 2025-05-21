@@ -3,7 +3,7 @@
  * @Autor: lyf
  * @Date: 2025-05-14 14:09:39
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-20 15:53:33
+ * @LastEditTime: 2025-05-20 20:53:32
  * @FilePath: \elk-admin-server\src\module\system\role\role.service.ts
  */
 import { Injectable } from '@nestjs/common';
@@ -76,10 +76,20 @@ export class RoleService {
     return camelizeKeys(role);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  /**
+   * 删除角色 - 设计到级联删除( role menu)
+   * @body  {ids: number[]}
+   */
+  async remove({ ids }: { ids: number[] }) {
+    const roles = await this.prisma.sys_role.deleteMany({
+      where: {
+        role_id: {
+          in: ids,
+        },
+      },
+    });
+    return roles;
   }
-
   /**
    * 根据用户id查询角色
    * @param userId

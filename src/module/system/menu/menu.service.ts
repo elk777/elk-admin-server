@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-19 20:37:33
+ * @LastEditTime: 2025-05-21 20:49:03
  * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
  * @Description: 菜单服务逻辑
  */
@@ -23,8 +23,25 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 @Injectable()
 export class MenuService {
   constructor(private prisma: PrismaService) {}
-  create(listMenuDto: ListMenuDto) {
-    return 'This action adds a new menu';
+
+  /**
+   * 新增菜单
+   * @param listMenuDto
+   * @return ListMenuDto[]
+   */
+  async create(listMenuDto: ListMenuDto) {
+    if (!listMenuDto.menuId) {
+      delete listMenuDto.menuId;
+    }
+    const listFormatMenuDto = decamelizeKeys(listMenuDto);
+    const role = await this.prisma.sys_menu.create({
+      data: listFormatMenuDto,
+    });
+    if (!role) {
+      return '新增失败';
+    } else {
+      return '新增成功';
+    }
   }
 
   /**

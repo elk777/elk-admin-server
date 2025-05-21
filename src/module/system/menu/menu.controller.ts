@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-19 20:11:23
+ * @LastEditTime: 2025-05-21 19:12:57
  * @FilePath: \elk-admin-server\src\module\system\menu\menu.controller.ts
  * @Description: 文件内容描述语
  */
@@ -26,7 +26,7 @@ import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createMenuDto: ListMenuDto) {
     return this.menuService.create(createMenuDto);
   }
