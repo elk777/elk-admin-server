@@ -3,7 +3,7 @@
  * @Autor: lyf
  * @Date: 2025-05-14 14:09:39
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-20 20:26:48
+ * @LastEditTime: 2025-05-22 19:48:17
  * @FilePath: \elk-admin-server\src\module\system\role\role.controller.ts
  */
 import {
@@ -19,6 +19,7 @@ import {
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { RoleEntity } from './entities/role.entity';
 
 // 引入swagger
 import {
@@ -34,7 +35,9 @@ import {
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Post()
+  @ApiOperation({ summary: '创建角色', description: '创建角色' })
+  @ApiBody({ type: CreateRoleDto })
+  @Post('create')
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
   }
@@ -53,7 +56,9 @@ export class RoleController {
     required: true,
   })
   @Get('list')
-  findAll(@Query() params: { pageNum: number; pageSize: number }) {
+  findAll(
+    @Query() params: { pageNum: number; pageSize: number },
+  ): Promise<RoleEntity> {
     return this.roleService.findAll(params);
   }
 
@@ -65,7 +70,7 @@ export class RoleController {
     required: true,
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<RoleEntity> {
     return this.roleService.findOne(+id);
   }
 
@@ -77,8 +82,14 @@ export class RoleController {
   }
 
   @ApiOperation({ summary: '删除角色', description: '删除角色' })
-  @Delete('/del')
-  remove(@Body() { ids }: { ids: number[] }) {
-    return this.roleService.remove({ ids });
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: '角色id',
+    required: true,
+  })
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.roleService.remove(+id);
   }
 }

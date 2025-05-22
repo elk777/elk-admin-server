@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-21 20:49:03
+ * @LastEditTime: 2025-05-22 14:04:48
  * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
  * @Description: 菜单服务逻辑
  */
@@ -91,17 +91,24 @@ export class MenuService {
   }
 
   /**
-   * 删除菜单
+   * 删除菜单-涉及到级联删除
    * @param id
    * @return ListMenuDto[]
    */
   async remove(id: number) {
-    const menus = await this.prisma.sys_menu.delete({
+    const role = this.prisma.sys_role_menu.deleteMany({
       where: {
         menu_id: id,
       },
     });
-    if (!menus) {
+    const menus = this.prisma.sys_menu.delete({
+      where: {
+        menu_id: id,
+      },
+    });
+    // 事务-删除菜单表和角色菜单关联表相应的信息
+    const transaction = await this.prisma.$transaction([role, menus]);
+    if (!transaction) {
       return '删除失败';
     }
     return '删除成功';
