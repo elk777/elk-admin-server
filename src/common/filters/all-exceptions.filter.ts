@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-03-16 11:29:16
- * @LastEditors: elk 
- * @LastEditTime: 2025-05-06 16:48:37
- * @FilePath: /vue2_project_server/src/common/filters/all-exceptions.filter.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-23 14:02:15
+ * @FilePath: \elk-admin-server\src\common\filters\all-exceptions.filter.ts
  * @Description: 统一的错误处理过滤器
  */
 // 从@nestjs/common导入所需的装饰器和接口
@@ -82,6 +82,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
   getMessage(exception: unknown) {
     if (exception instanceof HttpException) {
+      if (exception.message.includes('Exception')) {
+        return exception.getResponse();
+      }
       return exception.message;
     } else {
       return (exception as myError).message || '服务器错误';

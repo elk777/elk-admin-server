@@ -1,7 +1,7 @@
 /*
  * @Author: elk
  * @Date: 2025-04-25 15:51:17
- * @LastEditors: elk 
+ * @LastEditors: elk
  * @LastEditTime: 2025-04-25 16:53:52
  * @FilePath: /vue2_project_server/src/common/exceptions/biz.exception.ts
  * @Description: 业务通用自定义异常
