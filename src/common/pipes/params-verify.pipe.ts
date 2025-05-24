@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-03-18 19:46:28
- * @LastEditors: elk 
- * @LastEditTime: 2025-03-18 20:18:28
- * @FilePath: /vue2_project_server/src/common/pipes/params-verify.pipe.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-23 13:58:42
+ * @FilePath: \elk-admin-server\src\common\pipes\params-verify.pipe.ts
  * @Description: 参数验证管道
  */
 import {
@@ -16,6 +16,8 @@ import {
 
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+
+import { BizException } from '@/common/exceptions/biz.exception';
 
 @Injectable()
 export class ParamsVerifyPipe implements PipeTransform {
@@ -33,8 +35,8 @@ export class ParamsVerifyPipe implements PipeTransform {
     if (errors.length > 0) {
       throw new HttpException(this.handleError(errors), HttpStatus.BAD_REQUEST);
     }
-    // 验证通过，返回原始值
-    return value;
+    // 验证通过,返回DTO实例
+    return DTO;
   }
 
   // 判断是否需要验证的类型

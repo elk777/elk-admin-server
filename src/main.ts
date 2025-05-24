@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:15:32
- * @LastEditors: elk
- * @LastEditTime: 2025-04-18 16:55:50
- * @FilePath: /vue2_project_server/src/main.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-23 14:07:23
+ * @FilePath: \elk-admin-server\src\main.ts
  * @Description: 入口文件配置
  */
 import { NestFactory } from '@nestjs/core';
@@ -18,6 +18,8 @@ import { LoggerService } from '@/module/common/logger/logger.service';
 import { ResponseInterceptor } from './common/Interceptors/response.interceptor';
 // 引入全局异常过滤器
 import { AllExceptionsFilter } from '@/common/filters/all-exceptions.filter';
+// 引入全局参数验证管道
+import { ParamsVerifyPipe } from '@/common/pipes/params-verify.pipe';
 
 /**
  * 从 @nestjs/platform-express 包中导入 NestExpressApplication 类型。
@@ -48,6 +50,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor(loggerService));
   // 全局异常过滤器
   app.useGlobalFilters(new AllExceptionsFilter(loggerService));
+  // 全局开启自定义参数管道验证
+  app.useGlobalPipes(new ParamsVerifyPipe());
 
   // 开启静态资源访问
   app.useStaticAssets(join(__dirname, 'upload'), {
