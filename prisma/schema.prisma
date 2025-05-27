@@ -206,7 +206,7 @@ model sys_dict_type {
 
 /// 字典数据表
 model sys_dict_data {
-  id         String    @id @db.VarChar(255)
+  id         Int       @id @default(autoincrement())
   dictCode   String    @map("dict_code") @db.VarChar(255)
   dictLabel  String    @map("dict_label")
   dictValue  String    @map("dict_value")
