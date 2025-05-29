@@ -12,7 +12,7 @@ model sys_user {
   /// 用户id
   user_id    Int             @id @default(autoincrement())
   /// 部门id
-  dept_id    Int?
+  dept_id    String?         @db.VarChar(10)
   /// 用户名称
   user_name  String
   /// 用户昵称
@@ -41,6 +41,7 @@ model sys_user {
   created_at DateTime        @default(now())
   /// 修改时间
   updated_at DateTime?       @updatedAt
+  depts      sys_user_dept[]
   roles      sys_user_role[]
 }
 
@@ -76,7 +77,7 @@ model sys_dept {
   created_at DateTime        @default(now())
   /// 更新时间
   updated_at DateTime?       @updatedAt
-  roles      sys_role_dept[]
+  users      sys_user_dept[]
 }
 
 /// 角色表
@@ -103,7 +104,6 @@ model sys_role {
   created_at DateTime        @default(now())
   /// 更新时间
   updated_at DateTime?       @updatedAt
-  depts      sys_role_dept[]
   menus      sys_role_menu[]
   users      sys_user_role[]
 }
@@ -179,17 +179,17 @@ model sys_role_menu {
   @@index([menu_id], map: "sys_role_menu_menu_id_fkey")
 }
 
-/// 角色与部门关联表 N-N
-model sys_role_dept {
+/// 用户与部门关联表 N-1
+model sys_user_dept {
   /// 角色id
-  role_id Int
+  user_id Int
   /// 部门id
   dept_id Int
   dept    sys_dept @relation(fields: [dept_id], references: [dept_id])
-  role    sys_role @relation(fields: [role_id], references: [role_id])
+  user    sys_user @relation(fields: [user_id], references: [user_id])
 
-  @@id([role_id, dept_id])
-  @@index([dept_id], map: "sys_role_dept_dept_id_fkey")
+  @@id([user_id, dept_id])
+  @@index([dept_id])
 }
 
 /// 字典类型表
@@ -206,7 +206,7 @@ model sys_dict_type {
 
 /// 字典数据表
 model sys_dict_data {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @db.VarChar(255)
   dictCode   String    @map("dict_code") @db.VarChar(255)
   dictLabel  String    @map("dict_label")
   dictValue  String    @map("dict_value")
