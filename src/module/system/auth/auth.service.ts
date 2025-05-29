@@ -2,7 +2,7 @@
  * @Author: elk
  * @Date: 2025-03-11 18:18:25
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-15 14:58:33
+ * @LastEditTime: 2025-05-29 13:52:25
  * @FilePath: \elk-admin-server\src\module\system\auth\auth.service.ts
  * @Description: 文件内容描述语
  */
@@ -50,12 +50,12 @@ export class AuthService {
     const user = await this.userService.findOne({ user_name: username });
     const payload = {
       username,
-      sub: user.user_id,
+      sub: user.userId,
       timeOut: new Date().getTime() + 1000 * 60 * 60 * 24 * 7,
     };
     const token = this.jwtService.sign(payload);
     // 缓存token
-    await this.redis.set(`${username}&${user.user_id}`, token, 60 * 60 * 24);
+    await this.redis.set(`${username}&${user.userId}`, token, 60 * 60 * 24);
     return {
       token,
     };

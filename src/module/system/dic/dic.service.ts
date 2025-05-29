@@ -29,6 +29,7 @@ export class DicService {
     const dictData = this.prisma.sys_dict_data.createMany({
       data: dicData.map((item) => {
         return {
+          id: item.id.toString(),
           dictCode: createDicDto.dictType,
           dictLabel: item.label,
           dictValue: item.value,
@@ -101,7 +102,7 @@ export class DicService {
     });
     const dictDatas = dicData.map((item) =>
       this.prisma.sys_dict_data.updateMany({
-        where: { id: item.id },
+        where: { id: item.id.toString() },
         data: {
           dictLabel: item.label,
           dictValue: item.value,

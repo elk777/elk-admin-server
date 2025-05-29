@@ -3,7 +3,7 @@
  * @Autor: lyf
  * @Date: 2025-05-14 14:09:39
  * @LastEditors: lyf
- * @LastEditTime: 2025-05-22 19:48:17
+ * @LastEditTime: 2025-05-27 11:10:39
  * @FilePath: \elk-admin-server\src\module\system\role\role.controller.ts
  */
 import {
@@ -18,6 +18,7 @@ import {
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { ListRoleDto } from './dto/list-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleEntity } from './entities/role.entity';
 
@@ -56,9 +57,7 @@ export class RoleController {
     required: true,
   })
   @Get('list')
-  findAll(
-    @Query() params: { pageNum: number; pageSize: number },
-  ): Promise<RoleEntity> {
+  findAll(@Query() params: ListRoleDto): Promise<RoleEntity> {
     return this.roleService.findAll(params);
   }
 

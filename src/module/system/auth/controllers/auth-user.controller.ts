@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-04-27 16:25:23
- * @LastEditors: elk
- * @LastEditTime: 2025-05-08 13:55:30
- * @FilePath: /vue2_project_server/src/module/system/auth/controllers/auth-user.controller.ts
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-29 13:53:00
+ * @FilePath: \elk-admin-server\src\module\system\auth\controllers\auth-user.controller.ts
  * @Description: 登录-用户信息-控制器
  */
 import { Controller, Get } from '@nestjs/common';

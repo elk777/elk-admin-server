@@ -8,6 +8,7 @@
  */
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { ListRoleDto } from './dto/list-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleEntity } from './entities/role.entity';
 // 引入prisma
@@ -61,13 +62,7 @@ export class RoleService {
    * @param pageSize
    * @returns RoleEntity
    */
-  async findAll({
-    pageNum,
-    pageSize,
-  }: {
-    pageNum: number;
-    pageSize: number;
-  }): Promise<RoleEntity> {
+  async findAll({ pageNum, pageSize }: ListRoleDto): Promise<RoleEntity> {
     const roles = await this.prisma.sys_role.findMany({
       skip: (pageNum - 1) * pageSize,
       take: Number(pageSize),

@@ -1,3 +1,11 @@
+/*
+ * @Description: 字典创建参数
+ * @Autor: lyf
+ * @Date: 2025-05-17 16:28:08
+ * @LastEditors: lyf
+ * @LastEditTime: 2025-05-29 14:31:11
+ * @FilePath: \elk-admin-server\src\module\system\dic\dto\create-dic.dto.ts
+ */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsNumber, IsOptional } from 'class-validator';
 
@@ -10,6 +18,7 @@ class IDicData {
   label: string;
 }
 export class CreateDicDto {
+  id?: number;
   @ApiProperty({ description: '字典ID' })
   @IsOptional()
   dictID?: number;
