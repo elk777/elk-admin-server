@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-03-11 18:18:35
- * @LastEditors: lyf
- * @LastEditTime: 2025-05-29 17:17:44
- * @FilePath: \elk-admin-server\src\module\system\user\user.service.ts
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-06-07 21:47:08
+ * @FilePath: /vue2_project_server/src/module/system/user/user.service.ts
  * @Description: 文件内容描述语
  */
 import { Injectable } from '@nestjs/common';
@@ -30,8 +30,44 @@ export class UserService {
     private redis: RedisService,
   ) {}
   // 注入config服务
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    // 新增用户表
+    const user = await this.prisma.sys_user.create({
+      data: {
+        user_name: createUserDto.userName,
+        password: createUserDto.password,
+        dept_id: createUserDto.deptId,
+        nick_name: createUserDto.nickName,
+        phone: createUserDto.phone,
+        email: createUserDto.email,
+        avatar: createUserDto.avatar,
+        sex: createUserDto.sex,
+        status: createUserDto.status,
+        remark: createUserDto.remark,
+      },
+    });
+    // 新增用户角色表
+    const role = this.prisma.sys_user_role.create({
+      data: {
+        user_id: user.user_id,
+        role_id: createUserDto.roleIds,
+      },
+    });
+    // 新增用户部门表
+    const deptIds = createUserDto.deptId.split(',') || [0];
+    const dept = this.prisma.sys_user_dept.createMany({
+      data: deptIds.map((item) => ({
+        user_id: user.user_id,
+        dept_id: Number(item),
+      })),
+    });
+    // 事务-新增用户表和用户角色表和用户部门表相应的信息
+    const transaction = this.prisma.$transaction([role, dept]);
+    if (!transaction) {
+      return '新增失败';
+    } else {
+      return '新增成功';
+    }
   }
 
   /**
@@ -160,23 +196,6 @@ export class UserService {
    * @returns
    */
   async update(updateUserDto: UpdateUserDto) {
-    // const userId = updateUserDto.userId;
-    // 辅助函数：比较两个数组是否相等
-    // const isEqual = (a: T, b: T) => {
-    //   if (a.length !== b.length) {
-    //     return false;
-    //   }
-    //   const sortA = [...a].sort();
-    //   const sortB = [...b].sort();
-    //   return sortA.every((value, index) => value === sortB[index]);
-    // };
-    // 1、获取当前角色关联信息
-    // const currentRoles = await this.prisma.sys_user_role.findMany({
-    //   where: {
-    //     user_id: userId,
-    //   },
-    //   select: { role_id: true },
-    // });
     // 修改角色和用户绑定
     const role = this.prisma.sys_user_role.updateMany({
       where: {
@@ -234,7 +253,36 @@ export class UserService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  /**
+   * 删除用户
+   * @param id
+   * @returns
+   * */
+  async remove(id: number) {
+    // 删除用户表
+    const user = this.prisma.sys_user.delete({
+      where: {
+        user_id: id,
+      },
+    });
+    // 删除用户角色表
+    const role = this.prisma.sys_user_role.deleteMany({
+      where: {
+        user_id: id,
+      },
+    });
+    // 删除用户部门表
+    const dept = this.prisma.sys_user_dept.deleteMany({
+      where: {
+        user_id: id,
+      },
+    });
+    // 事务
+    const transaction = await this.prisma.$transaction([role, dept, user]);
+    if (!transaction) {
+      return '删除失败';
+    } else {
+      return '删除成功';
+    }
   }
 }
