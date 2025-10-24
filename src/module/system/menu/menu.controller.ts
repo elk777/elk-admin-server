@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
- * @LastEditors: lyf
- * @LastEditTime: 2025-05-27 11:00:14
- * @FilePath: \elk-admin-server\src\module\system\menu\menu.controller.ts
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-10-22 21:00:50
+ * @FilePath: /elk-server/vue2_project_server/src/module/system/menu/menu.controller.ts
  * @Description: 文件内容描述语
  */
 import {
@@ -51,7 +51,8 @@ export class MenuController {
   @ApiOperation({ summary: '更新菜单', description: '更新菜单' })
   @ApiBody({ type: ListMenuDto })
   @Put('')
-  update(@Body() updateMenuDto: ListMenuDto) {
+  update(@Body() updateMenuDto: UpdateMenuDto) {
+    console.log("🚀 ~ MenuController ~ update ~ updateMenuDto:", updateMenuDto);
     return this.menuService.update(updateMenuDto);
   }
 

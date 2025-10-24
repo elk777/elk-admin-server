@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-05-07 15:29:02
- * @LastEditors: lyf
- * @LastEditTime: 2025-05-22 14:04:48
- * @FilePath: \elk-admin-server\src\module\system\menu\menu.service.ts
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-10-23 20:35:35
+ * @FilePath: /elk-server/vue2_project_server/src/module/system/menu/menu.service.ts
  * @Description: 菜单服务逻辑
  */
 import { Injectable } from '@nestjs/common';
@@ -15,7 +15,7 @@ import { getRoutes } from '@/utils/permission.util';
 // 引入prisma服务
 import { PrismaService } from 'prisma/prisma.service';
 
-import { plainToInstance } from 'class-transformer';
+// import { plainToInstance } from 'class-transformer';
 
 // 引入humps库:下划线和小驼峰转换
 import { camelizeKeys, decamelizeKeys } from 'humps';
@@ -135,10 +135,13 @@ export class MenuService {
         },
       },
     });
-    const menuData = plainToInstance(
-      ListMenuDto,
-      menus.menus.map((menu) => menu.menu, { excludeExtraneousValues: true }),
-    );
+    // const menuData = plainToInstance(
+    //   ListMenuDto,
+    //   menus.menus.map((menu) => menu.menu, { excludeExtraneousValues: true }),
+    // );
+    // console.log("🚀 ~ MenuService ~ getMenus ~ menus.menus:", menus.menus)
+    const menuList = menus.menus.map((menu) => menu.menu);
+    const menuData = camelizeKeys(menuList);
     const formatMenus = getRoutes(menuData);
     return formatMenus;
   }

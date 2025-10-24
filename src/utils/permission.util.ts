@@ -1,9 +1,9 @@
 /*
  * @Author: elk
  * @Date: 2025-05-08 14:36:31
- * @LastEditors: lyf
- * @LastEditTime: 2025-05-19 16:14:25
- * @FilePath: \elk-admin-server\src\utils\permission.util.ts
+ * @LastEditors: elk 
+ * @LastEditTime: 2025-10-24 20:16:30
+ * @FilePath: /elk-server/vue2_project_server/src/utils/permission.util.ts
  * @Description: 权限相关工具类
  */
 
@@ -37,7 +37,7 @@ export function filterRoutes(route: ListMenuDto, isRoot: boolean): IRouterRow {
     return {
       id: route.menuId,
       title: route.menuName,
-      name: route.path,
+      name: Number(route.isFrame) ? route.path : route.component,
       path: route.path,
       link: null,
       icon: route.icon,
@@ -47,7 +47,7 @@ export function filterRoutes(route: ListMenuDto, isRoot: boolean): IRouterRow {
     return {
       id: route.menuId,
       title: route.menuName,
-      name: route.path,
+      name: Number(route.isFrame) ? route.path : route.component,
       path: route.path,
       icon: route.icon,
       link: route.component,
